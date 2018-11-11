@@ -1,0 +1,15 @@
+{
+  "name": "mailbox",
+  "version": "1.0.0",
+  "description": "A node.js service responisble for publishig alert messages over the MAM IOTA protocol to whowhomever is listening",
+  "main": "mamService.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Kristof Van der Jonckheyd",
+  "license": "MIT",
+  "dependencies": {
+    "iota.lib.js": "^0.5.1",
+    "moment": "^2.22.2"
+  }
+}

@@ -21,7 +21,7 @@ if (config.CHANNELMODE == 'restricted') {
 const initialiseSensor = function() {
     const trigger = new gpio(config.GPIO_TRIGGER_PIN, {mode: gpio.OUTPUT});
     const echo = new gpio(config.GPIO_ECHO_PIN, {mode: gpio.INPUT, alert: true});
-    trigger.digitalWrite(0); // Make sure trigger is low
+    trigger.digitalWrite(0); // Make sure trigger is loww
 };
 
 // Publish to tangle

@@ -1,6 +1,6 @@
-const Mam = require('./lib/mam.node.js')
+const Mam = require('../lib/mam.node.js')
 const IOTA = require('iota.lib.js');
-const config = require('./config');
+const config = require('./config/config');
 const gpio = require('pigpio');
 const moment = require('moment');
 

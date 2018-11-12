@@ -4,7 +4,8 @@
   "description": "A node.js service responisble for publishig alert messages over the MAM IOTA protocol to whowhomever is listening",
   "main": "mamService.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "mam_sensor.js"
   },
   "author": "Kristof Van der Jonckheyd",
   "license": "MIT",

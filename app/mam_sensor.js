@@ -50,7 +50,7 @@ const readSensor = function() {
         } else {
         const endTick = tick;
         const distance = ((endTick >> 0) - (startTick >> 0)) / 2 / config.MICROSECDONDS_PER_CM;
-        const data = `{distance: ${distance}`;
+        const data = `{distance: ${distance}}`;
         const date = moment().utc().format('DD/MM/YYYY hh:mm:ss');
         const json = {
             "data": data, 

@@ -1,4 +1,4 @@
-FROM resin/raspberrypi3-node
+FROM granjow/rpi-raspbian-nodejs
 
 WORKDIR /app
 

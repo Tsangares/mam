@@ -1,11 +1,11 @@
-FROM node:9
+FROM resin/raspberrypi3-node
 
 WORKDIR /app
 
 COPY package*.json ./
 
 RUN apt-get update && apt-get install -y \
-    pigpio
+    pigpio  
 
 RUN npm install
 

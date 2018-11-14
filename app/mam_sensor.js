@@ -19,6 +19,8 @@ if (config.CHANNELMODE == 'restricted') {
 }
 
 const initialiseSensor = function() {
+    console.info('initialiseSensor');
+
     const trigger = new gpio(config.GPIO_TRIGGER_PIN, {mode: gpio.OUTPUT});
     const echo = new gpio(config.GPIO_ECHO_PIN, {mode: gpio.INPUT, alert: true});
     trigger.digitalWrite(0); // Make sure trigger is loww
@@ -26,6 +28,8 @@ const initialiseSensor = function() {
 
 // Publish to tangle
 const publish = async function(packet) {
+    console.info('publish');
+    
     // Create MAM Payload
     const trytes = iota.utils.toTrytes(JSON.stringify(packet));
     const message = Mam.create(mamState, trytes);
@@ -42,36 +46,40 @@ const publish = async function(packet) {
 };
 
 const readSensor = function() {
+    console.info('readSensor');
+
     let startTick;
-
     echo.on('alert', (level, tick) => {
+        console.info('sensor alert');
         if (level == 1) {
-        startTick = tick;
+            startTick = tick;
         } else {
-        const endTick = tick;
-        const distance = ((endTick >> 0) - (startTick >> 0)) / 2 / config.MICROSECDONDS_PER_CM;
-        const data = `{distance: ${distance}}`;
-        const date = moment().utc().format('DD/MM/YYYY hh:mm:ss');
-        const json = {
-            "data": data, 
-            "dateTime": date
-        };
+            const endTick = tick;
+            const distance = ((endTick >> 0) - (startTick >> 0)) / 2 / config.MICROSECDONDS_PER_CM;
+            const data = `{distance: ${distance}}`;
+            const date = moment().utc().format('DD/MM/YYYY hh:mm:ss');
+            const json = {
+                "data": data, 
+                "dateTime": date
+            };
 
-        const root = await publish(json);
-        console.log(`dateTime: ${json.dateTime}, data: ${json.data}, root: ${root}`);
+            const root = await publish(json);
+            console.log(`dateTime: ${json.dateTime}, data: ${json.data}, root: ${root}`);
         }
     });
 };
 
 // Start reading immediatly
 initialiseSensor();
-readSensor(); 
+readSensor();
 
 // Set a time interval between the reads
 setInterval(() => {
     if (config.ENABLED == true)
-        readSensor();
-    else
+        trigger.trigger(10, 1);
+    else {
+        const root = await publish(`${config.SENSORID} STOPPED`);
         break;
+    }    
 }, config.TIMEINTERVAL*1000);
 

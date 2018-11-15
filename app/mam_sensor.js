@@ -1,7 +1,7 @@
 const Mam = require('../lib/mam.node.js')
 const IOTA = require('iota.lib.js');
 const config = require('./config/config');
-const gpio = require('pigpio');
+const gpio = require('pigpio').Gpio;
 const moment = require('moment');
 
 // Initialise tangle API

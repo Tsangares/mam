@@ -75,8 +75,6 @@ const triggerSensor = async () => {
     }
 };
 
-// Start reading immediatly
-initialiseSensor();
 readSensor();
 
 // Set a time interval between the reads

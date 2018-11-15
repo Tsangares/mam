@@ -27,7 +27,7 @@ const initialiseSensor = function() {
 };
 
 // Publish to tangle
-const publish = async function(packet) {
+const publish = async (packet) => {
     console.info('publish');
     
     // Create MAM Payload
@@ -45,7 +45,7 @@ const publish = async function(packet) {
     return message.root;
 };
 
-const readSensor = function() {
+const readSensor = async () => {
     console.info('readSensor');
 
     let startTick;
@@ -74,7 +74,7 @@ initialiseSensor();
 readSensor();
 
 // Set a time interval between the reads
-setInterval(() => {
+setInterval(async () => {
     if (config.ENABLED == true)
         trigger.trigger(10, 1);
     else {

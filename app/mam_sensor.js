@@ -49,7 +49,7 @@ const readSensor = async () => {
     console.info('readSensor');
 
     let startTick;
-    echo.on('alert', (level, tick) => {
+    await echo.on('alert', async (level, tick) => {
         console.info('sensor alert');
         if (level == 1) {
             startTick = tick;
@@ -69,17 +69,19 @@ const readSensor = async () => {
     });
 };
 
+const triggerSensor = async () => {
+    if (config.ENABLED == true)
+        trigger.trigger(10, 1);
+    else {
+        const root = await publish(`${config.SENSORID} STOPPED`);
+        clearInterval(interval);
+    }
+};
+
 // Start reading immediatly
 initialiseSensor();
 readSensor();
 
 // Set a time interval between the reads
-setInterval(async () => {
-    if (config.ENABLED == true)
-        trigger.trigger(10, 1);
-    else {
-        const root = await publish(`${config.SENSORID} STOPPED`);
-        break;
-    }    
-}, config.TIMEINTERVAL*1000);
+const interval = setInterval(await triggerSensor, config.TIMEINTERVAL*1000);
 

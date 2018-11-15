@@ -5,7 +5,7 @@
   "main": "mamService.js",
   "scripts": {
     "test": "test",
-    "start": "node app/mam_sensor.js"
+    "start": "sudo node app/mam_sensor.js"
   },
   "author": "Kristof Van der Jonckheyd",
   "license": "MIT",

@@ -18,13 +18,10 @@ if (config.CHANNELMODE == 'restricted') {
     mamState = Mam.changeMode(mamState, config.CHANNELMODE);
 }
 
-const initialiseSensor = function() {
-    console.info('initialiseSensor');
-
-    const trigger = new gpio(config.GPIO_TRIGGER_PIN, {mode: gpio.OUTPUT});
-    const echo = new gpio(config.GPIO_ECHO_PIN, {mode: gpio.INPUT, alert: true});
-    trigger.digitalWrite(0); // Make sure trigger is loww
-};
+// Initialise GPIO module
+const trigger = new gpio(config.GPIO_TRIGGER_PIN, {mode: gpio.OUTPUT});
+const echo = new gpio(config.GPIO_ECHO_PIN, {mode: gpio.INPUT, alert: true});
+trigger.digitalWrite(0); // Make sure trigger is low
 
 // Publish to tangle
 const publish = async (packet) => {

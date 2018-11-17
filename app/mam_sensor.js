@@ -53,11 +53,12 @@ const readSensor = async () => {
         } else {
             const endTick = tick;
             const distance = ((endTick >> 0) - (startTick >> 0)) / 2 / config.MICROSECDONDS_PER_CM;
-            const data = `{distance: ${distance}}`;
-            const date = moment().utc().format('DD/MM/YYYY hh:mm:ss');
+            const mail = distance <= 3;
+            const data = `{distance: ${distance}, mail: ${mail}}`;
+            const dateTime = moment().utc().format('DD/MM/YYYY hh:mm');
             const json = {
                 "data": data, 
-                "dateTime": date
+                "dateTime": dateTime
             };
 
             const root = await publish(json);
@@ -67,6 +68,7 @@ const readSensor = async () => {
 };
 
 const triggerSensor = async () => {
+    console.info('triggerSensor');
     if (config.ENABLED == true)
         trigger.trigger(10, 1);
     else {

@@ -72,7 +72,7 @@ const triggerSensor = async () => {
     if (config.ENABLED == true)
         trigger.trigger(10, 1);
     else {
-        const root = await publish(`${config.SENSORID} STOPPED`);
+        const root = await publish(`${config.SENSORID} STOPPED.`);
         clearInterval(interval);
     }
 };

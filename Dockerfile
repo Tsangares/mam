@@ -5,6 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 
 RUN apt-get update \
+    &&  apt-get install pigpio \
     &&  apt-get install -y git-core \
     &&  git clone https://github.com/joan2937/pigpio \
     &&  (cd pigpio ; make install) \

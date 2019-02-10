@@ -1,7 +1,7 @@
 {
   "name": "mailbox",
   "version": "1.0.0",
-  "description": "A node.js service responisble for publishig sensor data over the MAM IOTA protocol to whomever is listening",
+  "description": "A node.js service responisble for publishing sensor data over the MAM IOTA protocol to whomever is listening",
   "main": "mamService.js",
   "scripts": {
     "test": "test",

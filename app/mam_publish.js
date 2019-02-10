@@ -42,7 +42,7 @@ const generateJSON = function() {
     return json;
 }
 
-const executeDataPublishing = async function() {
+const executeDataPublish = async function() {
     const json = generateJSON();
     console.log("json=",json);
 
@@ -51,6 +51,6 @@ const executeDataPublishing = async function() {
 }
 
 // Start it immediately
-executeDataPublishing();
+executeDataPublish();
 
-setInterval(executeDataPublishing, 30000);
+setInterval(executeDataPublish, 30000);

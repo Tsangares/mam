@@ -61,18 +61,16 @@ const readSensor = async () => {
             console.log("startTick: ", startTick);
             console.log("endTick: ", endTick);
             const distance = ((endTick >> 0) - (startTick >> 0)) / 2 / (1e6/34321);
-            const mail = distance <= 3;
+            const hasMail = distance <= 3;
             const dateTime = moment().utc().format('DD/MM/YYYY hh:mm');
             const json = {
-                "data": {
-                    "distance": distance,
-                    "mail": mail
-                }, 
+                "distance": distance,
+                "hasMail": hasMail,
                 "dateTime": dateTime
             };
 
             const root = await publish(json);
-            console.log(`dateTime: ${json.dateTime}, data: ${json.data.distance}, root: ${root}`);
+            console.log(`dateTime: ${json.dateTime}, data: ${json.distance}, root: ${root}`);
         }
     });
 };
@@ -90,5 +88,5 @@ const triggerSensor = async () => {
 readSensor();
 
 // Set a time interval between the reads
-const interval = setInterval(triggerSensor, config.TIMEINTERVAL*10000);
+const interval = setInterval(triggerSensor, config.TIMEINTERVAL*60000);
 

@@ -60,17 +60,19 @@ const readSensor = async () => {
             const endTick = tick;
             console.log("startTick: ", startTick);
             console.log("endTick: ", endTick);
-            const distance = ((endTick >> 0) - (startTick >> 0)) / 2 / config.MICROSECDONDS_PER_CM;
+            const distance = ((endTick >> 0) - (startTick >> 0)) / 2 / (1e6/34321);
             const mail = distance <= 3;
-            const data = `{distance: ${distance}, mail: ${mail}}`;
             const dateTime = moment().utc().format('DD/MM/YYYY hh:mm');
             const json = {
-                "data": data, 
+                "data": {
+                    "distance": distance,
+                    "mail": mail
+                }, 
                 "dateTime": dateTime
             };
 
             const root = await publish(json);
-            console.log(`dateTime: ${json.dateTime}, data: ${json.data}, root: ${root}`);
+            console.log(`dateTime: ${json.dateTime}, data: ${json.data.distance}, root: ${root}`);
         }
     });
 };

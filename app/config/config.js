@@ -30,7 +30,7 @@ config.TIME_INTERVAL = 1;
 //     "https://dyn.tangle-nodes.com:443",
 //     "https://pow5.iota.community:443",
 // ];
-config.PROVIDER = "https://node04.iotatoken.nl:443";
+config.PROVIDER = "https://pow.iota.community:443";
 config.CHANNELMODE = "restricted";
 config.AUTHORISATION_KEY = "iotamailbox";
 config.SECURITY_LEVEL = 1;

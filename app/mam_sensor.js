@@ -1,7 +1,7 @@
 const Mam = require('../lib/mam.node.js')
 const IOTA = require('iota.lib.js');
 const config = require('./config/config');
-const gpio = require('pigpio').Gpio;
+const Gpio = require('pigpio').Gpio;
 const moment = require('moment');
 
 // Initialise tangle API
@@ -19,8 +19,8 @@ if (config.CHANNELMODE == 'restricted') {
 }
 
 // Initialise GPIO module
-const trigger = new gpio(config.GPIO_TRIGGER_PIN, {mode: gpio.OUTPUT});
-const echo = new gpio(config.GPIO_ECHO_PIN, {mode: gpio.INPUT, alert: true});
+const trigger = new Gpio(23, {mode: Gpio.OUTPUT});
+const echo = new Gpio(24, {mode: Gpio.INPUT, alert: true});
 trigger.digitalWrite(0); // Make sure trigger is low
 
 // Publish to tangle

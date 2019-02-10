@@ -25,8 +25,8 @@ if (config.CHANNELMODE == 'restricted') {
 }
 
 // Initialise GPIO module
-const trigger = new Gpio(23, {mode: Gpio.OUTPUT});
-const echo = new Gpio(24, {mode: Gpio.INPUT, alert: true});
+const trigger = new Gpio(config.GPIO_TRIGGER_PIN, {mode: Gpio.OUTPUT});
+const echo = new Gpio(config.GPIO_ECHO_PIN, {mode: Gpio.INPUT, alert: true});
 trigger.digitalWrite(0); // Make sure trigger is low
 
 // Publish to tangle
@@ -58,6 +58,8 @@ const readSensor = async () => {
             startTick = tick;
         } else {
             const endTick = tick;
+            console.log("startTick: ", startTick);
+            console.log("endTick: ", endTick);
             const distance = ((endTick >> 0) - (startTick >> 0)) / 2 / config.MICROSECDONDS_PER_CM;
             const mail = distance <= 3;
             const data = `{distance: ${distance}, mail: ${mail}}`;

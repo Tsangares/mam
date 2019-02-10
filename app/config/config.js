@@ -2,7 +2,6 @@ var config = {};
 
 config.ENABLED = true;
 config.TIME_INTERVAL = 1;
-
 // config.PROVIDER = [
 //     "https://node02.iotatoken.nl:443",
 //     "https://turnip.iotasalad.org:14265",

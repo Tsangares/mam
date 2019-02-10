@@ -7,6 +7,12 @@ const moment = require('moment');
 // Initialise tangle API
 const iota = new IOTA({ provider: config.PROVIDER });
 
+// getNodeInfo()
+//   .then(info => console.log(info))
+//   .catch(err => {
+    
+//   })
+
 // Initialise MAM State
 let mamState = Mam.init(iota, undefined, config.SECURITY_LEVEL);
 

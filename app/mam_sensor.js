@@ -4,7 +4,7 @@ const Config = require('./config/config');
 const Gpio = require('pigpio').Gpio;
 const Moment = require('moment');
 
-console.log("Config :", Config);
+let attaching = false;
 
 // Initialise tangle API
 const iota = new IOTA({ provider: Config.PROVIDER });
@@ -34,7 +34,7 @@ trigger.digitalWrite(0); // Make sure trigger is low
 // Publish to tangle
 const publish = async (packet) => {
     console.info('publish');
-    
+        
     // Create MAM Payload
     const trytes = iota.utils.toTrytes(JSON.stringify(packet));
     const message = Mam.create(mamState, trytes);
@@ -51,35 +51,40 @@ const publish = async (packet) => {
 };
 
 const readSensor = async () => {
-    console.info('readSensor');
+    try {
+        console.info('readSensor');
 
-    let startTick;
-    await echo.on('alert', async (level, tick) => {
-        console.info('sensor alert');
-        if (level == 1) {
-            startTick = tick;
-        } else {
-            const endTick = tick;
-            console.log("startTick: ", startTick);
-            console.log("endTick: ", endTick);
-            const distance = ((endTick >> 0) - (startTick >> 0)) / 2 / (1e6/34321);
-            const hasMail = distance <= 3;
-            const dateTime = Moment().utc().format('DD/MM/YYYY hh:mm');
-            const json = {
-                "distance": distance,
-                "hasMail": hasMail,
-                "dateTime": dateTime
-            };
+        let startTick;
+        await echo.on('alert', async (level, tick) => {
+            console.info('sensor alert');
 
-            const root = await publish(json);
-            console.log(`dateTime: ${json.dateTime}, data: ${json.distance}, root: ${root}`);
-        }
-    });
+            if (level == 1) 
+                startTick = tick;
+            else {
+                const endTick = tick;
+                const distance = ((endTick >> 0) - (startTick >> 0)) / 2 / (1e6/34321);
+                const hasMail = distance <= 3;
+                const dateTime = Moment().utc().format('DD/MM/YYYY hh:mm');
+                const json = {
+                    "distance": distance,
+                    "hasMail": hasMail,
+                    "dateTime": dateTime
+                };
+                attaching = true;
+                const root = await publish(json);        
+                console.log(`dateTime: ${json.dateTime}, data: ${json.distance}, root: ${root}`);
+                attaching = false;
+            }
+        });
+    } catch (e) {
+        console.error('readSensor error: ', e.message);
+    }
 };
 
 const triggerSensor = async () => {
     console.info('triggerSensor');
-    if (Config.ENABLED == true)
+
+    if (Config.ENABLED == true && !attaching)
         trigger.trigger(10, 1);
     else {
         const root = await publish(`${Config.SENSORID} STOPPED.`);

@@ -11,7 +11,6 @@
   "license": "MIT",
   "dependencies": {
     "iota.lib.js": "^0.5.1",
-    "moment": "^2.22.2",
-    "pigpio": "^1.1.4"
+    "moment": "^2.22.2"
   }
 }

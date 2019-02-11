@@ -38,4 +38,4 @@ Config.SECURITY_LEVEL = 1;
 Config.GPIO_TRIGGER_PIN = 23;
 Config.GPIO_ECHO_PIN = 24;
 
-module.exports.config = Config;
+module.exports = Config;

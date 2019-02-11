@@ -1,7 +1,7 @@
 var Config = {};
 
 Config.ENABLED = true;
-Config.TIME_INTERVAL = 1;
+Config.TIME_INTERVAL = 10;
 // Config.PROVIDER = [
 //     "https://node02.iotatoken.nl:443",
 //     "https://turnip.iotasalad.org:14265",

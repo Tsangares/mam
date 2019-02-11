@@ -1,8 +1,8 @@
-var config = {};
+var Config = {};
 
-config.ENABLED = true;
-config.TIME_INTERVAL = 1;
-// config.PROVIDER = [
+Config.ENABLED = true;
+Config.TIME_INTERVAL = 1;
+// Config.PROVIDER = [
 //     "https://node02.iotatoken.nl:443",
 //     "https://turnip.iotasalad.org:14265",
 //     "https://peanut.iotasalad.org:14265",
@@ -30,12 +30,12 @@ config.TIME_INTERVAL = 1;
 //     "https://dyn.tangle-nodes.com:443",
 //     "https://pow5.iota.community:443",
 // ];
-config.PROVIDER = "https://wallet1.iota.town:443";
-config.CHANNELMODE = "restricted";
-config.AUTHORISATION_KEY = "iotamailbox";
-config.SECURITY_LEVEL = 1;
+Config.PROVIDER = "https://wallet1.iota.town:443";
+Config.CHANNELMODE = "restricted";
+Config.AUTHORISATION_KEY = "iotamailbox";
+Config.SECURITY_LEVEL = 1;
 
-config.GPIO_TRIGGER_PIN = 23;
-config.GPIO_ECHO_PIN = 24;
+Config.GPIO_TRIGGER_PIN = 23;
+Config.GPIO_ECHO_PIN = 24;
 
-module.exports = config;
+module.exports = Config;

@@ -1,11 +1,11 @@
 const Mam = require('../lib/mam.node.js')
 const IOTA = require('iota.lib.js');
-const config = require('./config/config');
+const Config = require('./config/config').Config;
 const Gpio = require('pigpio').Gpio;
 const moment = require('moment');
 
 // Initialise tangle API
-const iota = new IOTA({ provider: config.PROVIDER });
+const iota = new IOTA({ provider: Config.PROVIDER });
 
 // getNodeInfo()
 //   .then(info => console.log(info))
@@ -14,19 +14,19 @@ const iota = new IOTA({ provider: config.PROVIDER });
 //   })
 
 // Initialise MAM State
-let mamState = Mam.init(iota, undefined, config.SECURITY_LEVEL);
+let mamState = Mam.init(iota, undefined, Config.SECURITY_LEVEL);
 
 // Set channel mode
-if (config.CHANNELMODE == 'restricted') {
-    const key = iota.utils.toTrytes(config.AUTHORISATION_KEY);
-    mamState = Mam.changeMode(mamState, config.CHANNELMODE, key);
+if (Config.CHANNELMODE == 'restricted') {
+    const key = iota.utils.toTrytes(Config.AUTHORISATION_KEY);
+    mamState = Mam.changeMode(mamState, Config.CHANNELMODE, key);
 } else {
-    mamState = Mam.changeMode(mamState, config.CHANNELMODE);
+    mamState = Mam.changeMode(mamState, Config.CHANNELMODE);
 }
 
 // Initialise GPIO module
-const trigger = new Gpio(config.GPIO_TRIGGER_PIN, {mode: Gpio.OUTPUT});
-const echo = new Gpio(config.GPIO_ECHO_PIN, {mode: Gpio.INPUT, alert: true});
+const trigger = new Gpio(Config.GPIO_TRIGGER_PIN, {mode: Gpio.OUTPUT});
+const echo = new Gpio(Config.GPIO_ECHO_PIN, {mode: Gpio.INPUT, alert: true});
 trigger.digitalWrite(0); // Make sure trigger is low
 
 // Publish to tangle
@@ -77,17 +77,17 @@ const readSensor = async () => {
 
 const triggerSensor = async () => {
     console.info('triggerSensor');
-    if (config.ENABLED == true)
+    if (Config.ENABLED == true)
         trigger.trigger(10, 1);
     else {
-        const root = await publish(`${config.SENSORID} STOPPED.`);
+        const root = await publish(`${Config.SENSORID} STOPPED.`);
         clearInterval(interval);
     }
 };
 
 readSensor();
 
-console.log("interval time: ", config.TIMEINTERVAL);
+console.log("interval time: ", Config.TIMEINTERVAL);
 // Set a time interval between the reads
-const interval = setInterval(triggerSensor, config.TIMEINTERVAL*60000);
+const interval = setInterval(triggerSensor, Config.TIMEINTERVAL * 1000);
 

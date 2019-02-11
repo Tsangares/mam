@@ -1,8 +1,8 @@
 const Mam = require('../lib/mam.node.js')
 const IOTA = require('iota.lib.js');
-const Config = require('./config/config').Config;
+const Config = require('./config/config');
 const Gpio = require('pigpio').Gpio;
-const moment = require('moment');
+const Moment = require('moment');
 
 // Initialise tangle API
 const iota = new IOTA({ provider: Config.PROVIDER });
@@ -62,7 +62,7 @@ const readSensor = async () => {
             console.log("endTick: ", endTick);
             const distance = ((endTick >> 0) - (startTick >> 0)) / 2 / (1e6/34321);
             const hasMail = distance <= 3;
-            const dateTime = moment().utc().format('DD/MM/YYYY hh:mm');
+            const dateTime = Moment().utc().format('DD/MM/YYYY hh:mm');
             const json = {
                 "distance": distance,
                 "hasMail": hasMail,

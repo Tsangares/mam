@@ -1,7 +1,7 @@
 const Mam = require('../lib/mam.node.js')
 const IOTA = require('iota.lib.js');
 const Config = require('./config/config');
-//const Gpio = require('pigpio').Gpio;
+const Gpio = require('pigpio').Gpio;
 const Moment = require('moment');
 
 console.log("Config :", Config);

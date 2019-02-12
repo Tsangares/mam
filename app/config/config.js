@@ -30,7 +30,7 @@ Config.TIME_INTERVAL = 10;
 //     "https://dyn.tangle-nodes.com:443",
 //     "https://pow5.iota.community:443",
 // ];
-Config.PROVIDER = "https://nodes.thetangle.org:443";
+Config.PROVIDER = "https://nodes.devnet.iota.org";
 Config.CHANNELMODE = "restricted";
 Config.AUTHORISATION_KEY = "IOTAMAILBOX";
 Config.SECURITY_LEVEL = 1;

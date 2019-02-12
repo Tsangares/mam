@@ -32,7 +32,7 @@ Config.TIME_INTERVAL = 10;
 // ];
 Config.PROVIDER = "https://wallet1.iota.town:443";
 Config.CHANNELMODE = "restricted";
-Config.AUTHORISATION_KEY = "iotamailbox";
+Config.AUTHORISATION_KEY = "IOTAMAILBOX";
 Config.SECURITY_LEVEL = 1;
 
 Config.GPIO_TRIGGER_PIN = 23;

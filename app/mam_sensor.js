@@ -1,30 +1,17 @@
-const Mam = require('../lib/mam.node.js')
-const IOTA = require('iota.lib.js');
+// TODO : 
+// - Fallback node functionality
+// - Set MAM to restricted mode
+const Mam = require('../lib/mam.client.js')
+const { asciiToTrytes, trytesToAscii } = require('@iota/converter')
 const Config = require('./config/config');
 const Gpio = require('pigpio').Gpio;
 const Moment = require('moment');
 
-let attaching = false;
-
-// Initialise tangle API
-const iota = new IOTA({ provider: Config.PROVIDER });
-
-// getNodeInfo()
-//   .then(info => console.log(info))
-//   .catch(err => {
-    
-//   })
-
 // Initialise MAM State
-let mamState = Mam.init(iota, undefined, Config.SECURITY_LEVEL);
+let mamState = Mam.init(Config.PROVIDER);
 
 // Set channel mode
-if (Config.CHANNELMODE == 'restricted') {
-    const key = iota.utils.toTrytes(Config.AUTHORISATION_KEY);
-    mamState = Mam.changeMode(mamState, Config.CHANNELMODE, key);
-} else {
-    mamState = Mam.changeMode(mamState, Config.CHANNELMODE);
-}
+mamState = Config.CHANNELMODE == 'restricted' ? Mam.changeMode(mamState, Config.CHANNELMODE, Config.AUTHORISATION_KEY) : Mam.changeMode(mamState, Config.CHANNELMODE);
 
 // Initialise GPIO module
 const trigger = new Gpio(Config.GPIO_TRIGGER_PIN, {mode: Gpio.OUTPUT});
@@ -36,7 +23,7 @@ const publish = async (packet) => {
     console.info('publish');
         
     // Create MAM Payload
-    const trytes = iota.utils.toTrytes(JSON.stringify(packet));
+    const trytes = asciiToTrytes(JSON.stringify(packet));
     const message = Mam.create(mamState, trytes);
 
     // Save new mamState
@@ -45,8 +32,9 @@ const publish = async (packet) => {
     console.log('Address: ', message.address);
 
     // Attach the payload.
-    await Mam.attach(message.payload, message.address);
+    await Mam.attach(message.payload, message.address, 3, 9);
 
+    console.log('Published: ', packet, '\n');
     return message.root;
 };
 
@@ -84,9 +72,9 @@ const readSensor = async () => {
 const triggerSensor = async () => {
     console.info('triggerSensor');
 
-    if (Config.ENABLED == true && !attaching)
+    if (Config.ENABLED && !attaching)
         trigger.trigger(10, 1);
-    else {
+    else if (!Config.ENABLED) {
         const root = await publish(`${Config.SENSORID} STOPPED.`);
         clearInterval(interval);
     }

@@ -1,6 +1,6 @@
 {
-  "name": "mailbox",
-  "version": "1.0.0",
+  "name": "sensoredMailbox",
+  "version": "0.2.0",
   "description": "A node.js service responisble for publishing sensor data over the MAM IOTA protocol to whomever is listening",
   "main": "mamService.js",
   "scripts": {
@@ -10,8 +10,9 @@
   "author": "Kristof Van der Jonckheyd",
   "license": "MIT",
   "dependencies": {
-    "iota.lib.js": "^0.5.1",
-    "moment": "^2.22.2",
+    "@iota/converter": "^1.0.0-beta.8",
+    "@iota/core": "^1.0.0-beta.8",
+    "moment": "^2.24.0",
     "pigpio": "^1.1.4"
   }
 }

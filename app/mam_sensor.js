@@ -85,5 +85,5 @@ const triggerSensor = async () => {
 readSensor();
 
 // Set a time interval between the reads
-const interval = setInterval(() => { if(!attaching) triggerSensor }, Config.TIME_INTERVAL * 1000);
+const interval = setInterval(() => { if(!attaching) { triggerSensor() } }, Config.TIME_INTERVAL * 1000);
 

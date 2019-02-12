@@ -58,10 +58,8 @@ const readSensor = async () => {
                     "hasMail": hasMail,
                     "dateTime": dateTime
                 };
-                attaching = true;
                 const root = await publish(json);        
-                console.log(`dateTime: ${json.dateTime}, data: ${json.distance}, root: ${root}`);
-                attaching = false;
+                console.log(`dateTime: ${json.dateTime}, distance: ${json.distance}, root: ${root}`);
             }
         });
     } catch (e) {
@@ -72,9 +70,9 @@ const readSensor = async () => {
 const triggerSensor = async () => {
     console.info('triggerSensor');
 
-    if (Config.ENABLED && !attaching)
+    if (Config.ENABLED)
         trigger.trigger(10, 1);
-    else if (!Config.ENABLED) {
+    else {
         const root = await publish(`${Config.SENSORID} STOPPED.`);
         clearInterval(interval);
     }

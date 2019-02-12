@@ -7,6 +7,8 @@ const Config = require('./config/config');
 const Gpio = require('pigpio').Gpio;
 const Moment = require('moment');
 
+let attaching = false;
+
 // Initialise MAM State
 let mamState = Mam.init(Config.PROVIDER);
 
@@ -41,7 +43,7 @@ const publish = async (packet) => {
 const readSensor = async () => {
     try {
         console.info('readSensor');
-
+        attaching = true;
         let startTick;
         await echo.on('alert', async (level, tick) => {
             console.info('sensor alert');
@@ -64,6 +66,8 @@ const readSensor = async () => {
         });
     } catch (e) {
         console.error('readSensor error: ', e.message);
+    } finally {
+        attaching = false;
     }
 };
 
@@ -81,5 +85,5 @@ const triggerSensor = async () => {
 readSensor();
 
 // Set a time interval between the reads
-const interval = setInterval(triggerSensor, Config.TIME_INTERVAL * 1000);
+const interval = setInterval(() => { if(!attaching) triggerSensor }, Config.TIME_INTERVAL * 1000);
 

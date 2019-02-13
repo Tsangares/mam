@@ -1,0 +1,12 @@
+{
+    "config": {
+        "enabled": true,
+        "timeInterval": 60,
+        "provider": "https://nodes.devnet.iota.org",
+        "channelMode": "restricted",
+        "authorisationKey": "IOTAMAILBOX",
+        "securityLevel": 1,
+        "gpioTriggerPin": 23,
+        "gpioEchoPin": 24
+    }
+}

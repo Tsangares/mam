@@ -1,13 +1,13 @@
 // TODO : 
-// - Fallback node functionality
-// - Set MAM to restricted mode
+// - Maken the config a json file
 const Mam = require('../lib/mam.client.js')
-const { asciiToTrytes, trytesToAscii } = require('@iota/converter')
+const asciiToTrytes = require('@iota/converter')
 const Config = require('./config/config');
 const Gpio = require('pigpio').Gpio;
 const Moment = require('moment');
 
 let attaching = false;
+let distanceBuffer = 0;
 
 // Initialise MAM State
 let mamState = Mam.init(Config.PROVIDER);
@@ -53,15 +53,17 @@ const readSensor = async () => {
             else {
                 const endTick = tick;
                 const distance = ((endTick >> 0) - (startTick >> 0)) / 2 / (1e6/34321);
-                const hasMail = distance <= 3;
-                const dateTime = Moment().utc().format('DD/MM/YYYY hh:mm');
-                const json = {
-                    "distance": distance,
-                    "hasMail": hasMail,
-                    "dateTime": dateTime
-                };
-                const root = await publish(json);        
-                console.log(`dateTime: ${json.dateTime}, distance: ${json.distance}, root: ${root}`);
+                if (persistentChangeDetected(distance)) {
+                    const hasMail = distance <= 3;
+                    const dateTime = Moment().utc().format('DD/MM/YYYY hh:mm');
+                    const json = {
+                        "distance": distance,
+                        "hasMail": hasMail,
+                        "dateTime": dateTime
+                    };
+                    const root = await publish(json);        
+                    console.log(`dateTime: ${json.dateTime}, distance: ${json.distance}, root: ${root}`);
+                }                
             }
         });
     } catch (e) {
@@ -69,6 +71,14 @@ const readSensor = async () => {
     } finally {
         attaching = false;
     }
+};
+
+const persistentChangeDetected = (distance) => {
+    console.info("changeDetected");
+
+    let result = (distanceBuffer < 3) != (distance < 3)
+    distanceBuffer = distance;
+    return result;
 };
 
 const triggerSensor = async () => {

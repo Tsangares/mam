@@ -1,7 +1,5 @@
-// TODO : 
-// - Maken the config a json file
 const Mam = require("../lib/mam.client.js")
-const { asciiToTrytes, trytesToAscii } = require("@iota/converter")
+const { asciiToTrytes } = require("@iota/converter")
 const Config = require("./config/config");
 const Gpio = require("pigpio").Gpio;
 const Moment = require("moment");
@@ -23,7 +21,7 @@ trigger.digitalWrite(0); // Make sure trigger is low
 
 // Publish to tangle
 const publish = async (packet) => {
-    console.info("publish");
+    console.group("publish");
         
     // Create MAM Payload
     const trytes = asciiToTrytes(JSON.stringify(packet));
@@ -31,19 +29,21 @@ const publish = async (packet) => {
 
     // Save new mamState
     mamState = message.state;
-    console.info("Root: ", message.root);
-    console.info("Address: ", message.address);
 
     // Attach the payload.
     await Mam.attach(message.payload, message.address, 3, 9);
 
+    console.info("Root: ", message.root);
+    console.info("Address: ", message.address);
     console.info("Published: ", packet, "\n");
+    console.groupEnd();
     return message.root;
 };
 
 const readSensor = async () => {
     try {
         console.info("readSensor");
+
         attaching = true;
         let startTick;
         await echo.on("alert", async (level, tick) => {
@@ -54,7 +54,6 @@ const readSensor = async () => {
             else {
                 const endTick = tick;
                 const distance = ((endTick >> 0) - (startTick >> 0)) / 2 / (1e6/34321);
-                console.info();
                 if (persistentChangeDetected(distance)) {
                     const hasMail = distance <= 3;
                     const dateTime = Moment().utc().format("DD/MM/YYYY hh:mm");
@@ -63,7 +62,7 @@ const readSensor = async () => {
                         "hasMail": hasMail,
                         "dateTime": dateTime
                     };
-                    const root = await publish(json);        
+                    await publish(json);        
                 }                
             }
         });
@@ -75,21 +74,25 @@ const readSensor = async () => {
 };
 
 const persistentChangeDetected = (distance) => {
+    console.group("persistentChangeDetected");
+
     let result = (distanceBuffer <= 3) != (distance <= 3);
     console.info("persistentChangeDetected: ", result);
     console.info("distance: ", distance);
+    console.groupEnd();
     distanceBuffer = distance;
     return result;
 };
 
 const triggerSensor = async () => {
-    console.info("triggerSensor");
+    console.group("triggerSensor");    
     console.info("Interval ", ++counter);
+    console.groupEnd();
     
     if (Config.ENABLED)
         trigger.trigger(10, 1);
     else {
-        const root = await publish(`${Config.SENSORID} STOPPED.`);
+        await publish(`${Config.SENSORID} STOPPED.`);
         clearInterval(interval);
     }
 };
@@ -98,5 +101,5 @@ readSensor();
 triggerSensor()
 
 // Set a time interval between the reads
-const interval = setInterval(() => { if(!attaching) { triggerSensor() } }, Config.TIME_INTERVAL * 1000);
+const interval = setInterval(() => { if (!attaching) triggerSensor() }, Config.TIME_INTERVAL * 1000);
 

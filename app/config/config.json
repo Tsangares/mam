@@ -1,6 +1,6 @@
 {
     "ENABLED": true,
-    "TIME_INTERVAL": 60,
+    "TIME_INTERVAL": 10,
     "PROVIDER": "https://nodes.devnet.iota.org",
     "CHANNELMODE": "restricted",
     "AUTHORISATION_KEY": "IOTAMAILBOX",

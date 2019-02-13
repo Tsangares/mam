@@ -1,7 +1,7 @@
 // TODO : 
 // - Maken the config a json file
 const Mam = require('../lib/mam.client.js')
-const asciiToTrytes = require('@iota/converter')
+const { asciiToTrytes, trytesToAscii } = require('@iota/converter')
 const Config = require('./config/config');
 const Gpio = require('pigpio').Gpio;
 const Moment = require('moment');
@@ -74,7 +74,7 @@ const readSensor = async () => {
 };
 
 const persistentChangeDetected = (distance) => {
-    let result = (distanceBuffer < 3) != (distance < 3);
+    let result = (distanceBuffer <= 3) != (distance <= 3);
     console.info("persistentChangeDetected: ", result);
     distanceBuffer = distance;
     return result;

@@ -74,9 +74,8 @@ const readSensor = async () => {
 };
 
 const persistentChangeDetected = (distance) => {
-    console.info("changeDetected");
-
-    let result = (distanceBuffer < 3) != (distance < 3)
+    let result = (distanceBuffer < 3) != (distance < 3);
+    console.info("persistentChangeDetected: ", result);
     distanceBuffer = distance;
     return result;
 };

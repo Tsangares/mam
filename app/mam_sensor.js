@@ -85,7 +85,7 @@ const persistentChangeDetected = (distance) => {
 const triggerSensor = async () => {
     console.info("triggerSensor");
     console.info("Interval ", count);
-    
+
     if (Config.ENABLED)
         trigger.trigger(10, 1);
     else {
@@ -95,7 +95,6 @@ const triggerSensor = async () => {
 };
 
 readSensor();
-triggerSensor()
 
 // Set a time interval between the reads
 const interval = setInterval(() => { if(!attaching) { triggerSensor() } }, Config.TIME_INTERVAL * 1000);

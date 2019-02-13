@@ -35,7 +35,7 @@ const publish = async (packet) => {
 
     console.info("Root: ", message.root);
     console.info("Address: ", message.address);
-    console.info("Published: ", packet, "\n");
+    console.info("Published: \n", packet, "\n");
     console.groupEnd();
     return message.root;
 };
@@ -78,16 +78,14 @@ const persistentChangeDetected = (distance) => {
 
     let result = (distanceBuffer <= 3) != (distance <= 3);
     console.info("persistentChangeDetected: ", result);
-    console.info("distance: ", distance);
+    console.info("distance: ", distance, "\n");
     console.groupEnd();
     distanceBuffer = distance;
     return result;
 };
 
 const triggerSensor = async () => {
-    console.group("triggerSensor");    
-    console.info("Interval ", ++counter);
-    console.groupEnd();
+    console.info("triggerSensor - interval ", ++counter);    
     
     if (Config.ENABLED)
         trigger.trigger(10, 1);
